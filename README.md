@@ -6,7 +6,7 @@ This backend segment of the Library Project employs a microservices architecture
 ### Technologies Used
 - **Maven**: Dependency management and project lifecycle management.
 - **Spring Boot**: Simplifies the development of new Spring applications.
-- **Spring Cloud Netflix**: Integration with Netflix OSS components.
+- **Spring Cloud Netflix**: Integration with this for putting up Eureka discovery server and various Eureka clients .
 - **Spring Cloud Gateway**: API gateway for routing and filtering requests to microservices.
 - **Spring Cloud Circuit Breaker (Resilience4j)**: Implements circuit breaker patterns.
 - **Spring Cloud Sleuth**: Implements distributed tracing.
