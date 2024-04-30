@@ -1,52 +1,35 @@
-# Library-Microservice(s)
-{USE RAW OPTION ON RIGHT TO VIEW THIS FOR BETTER INDENTATION}
+Library Project: Backend  
+=========================  
 
-Backend project for Library related microservices
+Overview
+This backend segment of the Library Project employs a microservices architecture to manage books, orders, and inventory. It is built using various robust technologies and patterns within the Spring ecosystem and related tools.
 
-Library Project: Backend
-========================
+Technologies Used
+Maven: Dependency management and project lifecycle management.
+Spring Boot: Simplifies the development of new Spring applications.
+Spring Cloud Netflix: Integration with Netflix OSS components.
+Spring Cloud Gateway: API gateway for routing and filtering requests to microservices.
+Spring Cloud Circuit Breaker (Resilience4j): Implements circuit breaker patterns.
+Spring Cloud Sleuth: Implements distributed tracing.
+Zipkin: Visualization tool for distributed tracing data.
+MySQL: Database for persistent storage.
+Architecture
+Microservices Structure: Multiple services running on different ports to simulate a microservices architecture.
+Service Components:
+Book Service: Add and retrieve books from the store.
+Order Service: Place orders for books and check inventory via REST calls to the Inventory service.
+Inventory Service: Manages inventory checked by the Order service for successful order placement.
+Discovery Service: Acts as a discovery server, where clients retrieve registry information containing IP addresses and ports for services.
+Gateway Service: Functions as an API gateway, directing requests to appropriate microservices.
+Communication and Patterns
+Synchronous Communication: Between the Order and Inventory services through REST calls.
+Circuit Breaker: Implemented using Resilience4j in the Order service for handling timeouts and retries during calls to the Inventory service.
+Load Balancing: Web client used between services is load-balanced to handle multiple instances.
+Service Discovery Pattern: Utilizes Spring Cloud Netflix to register services with the Discovery server. Services use the registry data for connecting to other services, even if the Discovery server is down temporarily.
+API Gateway Pattern: Uses Spring Cloud Gateway to centralize user requests, acting as a load balancer and routing requests based on defined rules.
+Distributed Tracing: Implemented with Spring Cloud Sleuth and visualized using Zipkin to track requests across all involved microservices and measure service response times.
+Flow of Requests
+Users can make requests on port 8080 which are handled by the Gateway Service. The Gateway routes these requests to either:
 
-Backend tools used - Maven,Spring Boot,Spring-Cloud-Netflix,Spring-Cloud-Gateway, 
-		      Spring Cloud Circuit Breaker,Spring Cloud Sleuth,
-		      Zipkin , Mysql
-
-Have: Multiple services running on different port to simulate Microservices Structure.
- 
-
-Book service - Add book to store, Get all books
-Order service - Place order for books , Interact with Inventory service via rest call to check if book in stock.
-Inventory service - Maintains inventory which order service checks for a successful order 
-
-{ABOVE SERVICES ACT AS CLIENT}
-Discovery service - Act as a DISCOVERY_SERVER which client reaches out to get registry containing ip and port for a service .
-Gateway service   - Act as a API_GATEWAY to bifurcate request to different microservice .
-
-(( Flow ))
-
-User(can call on 8080 port) ->  Gateway Service(bifurcates call to) : (Either) Product Service
-             				        	              :   (Or)   Order Service----------->   (calls) Inventory service{to see if order in stock)
-	
-Synchronus Communication   :: between Order and Inventory service is happening through Rest call.
-
-Circuit Breaker            :: Using Resilience4j for circuit breaker feature.Implemented this in order service as it calls
-				another microservice- Inventory service so to put timeouts and retry mechanism between them its used. 
-
-Load Balancing Enabled     :: Web client used to interact between service is load balanced enabled to handle multiple instance running case .
-
-Service Discovery pattern  :: Using Spring-Cloud-Netflix to register Discovery service as a SERVER and other services as its CLIENT.
-			       When Order Service wants to call Inventory service , it uses Webclient Builder With LOAD BALANCING enabled
-			       i.e. asks DISCOVERY SERVER to give ip and port of inventory service as multiple instances of inventory
-			       service can be running and Client(order service) stores this registry(Data having Ip,Port of Other Service)
-			       with itself.
-				
-	 		       If next time for some reason if Discovery Service is down , client(Order service) can use previously stored registry info
-			       to fetch ip,port of other services.
-			     
-Api Gateway Pattern        :: Using Spring-Cloud-Gateway to give a single address to user to call since all service running on different port
-			       Gateway service acts as a LOAD BALANCER to bifurcate requests to different downstream service.
-			       Uses defined Rules to call corresponding service.
-Distributed Tracing        :: Using Spring Cloud Sleuth for implementing Distributed Tracing And Zipkin tool to visualize this .
-			       It adds traceId in logs which is same for a request across all the microservices involved .
-			       ZIpking helps visualize that request went from which microservice to another and how much time each service took.
-
-
+Product Service
+Order Service → Inventory Service (to check if the order is in stock)
