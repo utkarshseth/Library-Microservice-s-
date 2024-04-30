@@ -1,6 +1,4 @@
-Library Project: Backend  
-=========================  
-
+Library Project: Backend
 Overview
 This backend segment of the Library Project employs a microservices architecture to manage books, orders, and inventory. It is built using various robust technologies and patterns within the Spring ecosystem and related tools.
 
